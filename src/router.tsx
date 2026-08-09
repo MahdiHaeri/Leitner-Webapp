@@ -4,7 +4,10 @@ import {
   createRouter,
 } from '@tanstack/react-router'
 
-import { AppShell, HomePage } from '@/routes/app-shell'
+import { AppShell } from '@/routes/app-shell'
+import { DashboardPage } from '@/routes/dashboard'
+import { ProfilePage } from '@/routes/profile'
+import { SettingsPage } from '@/routes/settings'
 
 const rootRoute = createRootRoute({
   component: AppShell,
@@ -13,10 +16,26 @@ const rootRoute = createRootRoute({
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
-  component: HomePage,
+  component: DashboardPage,
 })
 
-const routeTree = rootRoute.addChildren([indexRoute])
+const profileRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/profile',
+  component: ProfilePage,
+})
+
+const settingsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/settings',
+  component: SettingsPage,
+})
+
+const routeTree = rootRoute.addChildren([
+  indexRoute,
+  profileRoute,
+  settingsRoute,
+])
 
 export const router = createRouter({
   routeTree,

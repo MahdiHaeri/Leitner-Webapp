@@ -1,87 +1,64 @@
-import { Link, Outlet } from '@tanstack/react-router'
+import { Outlet } from '@tanstack/react-router'
+import { Zap } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
-import { useUiStore } from '@/stores/use-ui-store'
+import { SideNav } from '@/components/nav/side-nav'
+import { BottomNav } from '@/components/nav/bottom-nav'
+import { ThemeProvider } from '@/components/theme/theme-provider'
+import { ThemeToggle } from '@/components/theme/theme-toggle'
 
 export function AppShell() {
-  const sidebarOpen = useUiStore((state) => state.sidebarOpen)
-  const toggleSidebar = useUiStore((state) => state.toggleSidebar)
-
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-border/70 bg-background/80 backdrop-blur">
-        <div className="container flex items-center justify-between gap-4 py-4">
-          <div>
-            <p className="text-sm font-medium text-muted-foreground">
-              leitner-webapp
-            </p>
-            <h1 className="text-xl font-semibold tracking-tight">
-              Frontend foundation
-            </h1>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" onClick={toggleSidebar}>
-              {sidebarOpen ? 'Hide' : 'Show'} sidebar
-            </Button>
-            <Button asChild>
-              <Link to="/">Home</Link>
-            </Button>
-          </div>
-        </div>
-      </header>
+    <ThemeProvider>
+      <div className="min-h-screen bg-background">
+        {/* ── Desktop sidebar (md+) ───────────────────────────── */}
+        <SideNav />
 
-      <main className="container grid gap-6 py-8 lg:grid-cols-[240px_1fr]">
-        <aside
-          className={[
-            'rounded-lg border border-border bg-card p-4 text-sm text-muted-foreground transition-all',
-            sidebarOpen ? 'block' : 'hidden lg:block',
-          ].join(' ')}
+        {/* ── Mobile top bar (< md) ───────────────────────────── */}
+        <header
+          className="
+            md:hidden
+            sticky top-0 z-40
+            h-14 px-4
+            flex items-center justify-between
+            bg-background/90 backdrop-blur-sm
+            border-b border-border
+          "
         >
-          <p className="mb-2 font-medium text-foreground">Included stack</p>
-          <ul className="space-y-2">
-            <li>React + TypeScript</li>
-            <li>Vite + pnpm</li>
-            <li>Tailwind + shadcn-ready setup</li>
-            <li>TanStack Router</li>
-            <li>Zustand</li>
-          </ul>
-        </aside>
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center shadow-sm shadow-primary/40">
+              <Zap className="w-4 h-4 text-primary-foreground" strokeWidth={2.5} />
+            </div>
+            <span className="font-extrabold text-base text-foreground tracking-tight">
+              Leitner
+            </span>
+          </div>
 
-        <section className="min-w-0">
-          <Outlet />
-        </section>
-      </main>
-    </div>
-  )
-}
+          {/* Theme toggle */}
+          <ThemeToggle />
+        </header>
 
-export function HomePage() {
-  return (
-    <div className="space-y-6">
-      <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
-        <p className="text-sm font-medium text-muted-foreground">Ready for work</p>
-        <h2 className="mt-2 text-3xl font-semibold tracking-tight">
-          Your app scaffold is set up.
-        </h2>
-        <p className="mt-3 max-w-2xl text-muted-foreground">
-          This starter gives you a typed routing entry point, a shared Zustand
-          store, and a shadcn-compatible component layer on top of Tailwind.
-        </p>
+        {/* ── Page content ────────────────────────────────────── */}
+        {/*   ml offsets match the sidebar widths                 */}
+        {/*   pb-[4.5rem] on mobile = room for the bottom nav     */}
+        <main
+          className="
+            pb-[4.5rem]
+            md:pb-0
+            md:ml-20
+            lg:ml-60
+            min-h-screen
+          "
+        >
+          {/* Inner scroll region with comfortable max-width */}
+          <div className="mx-auto max-w-2xl px-4 py-6 md:px-6 md:py-8">
+            <Outlet />
+          </div>
+        </main>
+
+        {/* ── Mobile bottom nav (< md) ────────────────────────── */}
+        <BottomNav />
       </div>
-
-      <div className="grid gap-4 md:grid-cols-2">
-        {[
-          ['Routing', 'TanStack Router is wired with a root shell and home route.'],
-          ['UI', 'The Button component is ready for shadcn-style composition.'],
-          ['State', 'Zustand is available for shared client-side UI state.'],
-          ['Styling', 'Tailwind is configured with shadcn-friendly CSS variables.'],
-        ].map(([title, body]) => (
-          <article key={title} className="rounded-xl border border-border bg-card p-5">
-            <h3 className="font-medium">{title}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{body}</p>
-          </article>
-        ))}
-      </div>
-    </div>
+    </ThemeProvider>
   )
 }
