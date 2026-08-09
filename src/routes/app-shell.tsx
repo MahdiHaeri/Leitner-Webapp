@@ -50,8 +50,8 @@ export function AppShell() {
             min-h-screen
           "
         >
-          {/* Inner scroll region with comfortable max-width */}
-          <div className="mx-auto max-w-2xl px-4 py-6 md:px-6 md:py-8">
+          {/* Inner content region — wide enough for the 5-box grid */}
+          <div className="mx-auto max-w-5xl px-4 py-6 md:px-6 md:py-8">
             <Outlet />
           </div>
         </main>
