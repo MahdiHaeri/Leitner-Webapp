@@ -17,7 +17,7 @@
  * ───────────────────────────────────────────────────────────────────────────────
  */
 
-import { LayoutDashboard, User, Settings } from 'lucide-react'
+import { LayoutDashboard, User, Settings, LibraryBig } from 'lucide-react'
 import type { BoxId } from '@/types/leitner'
 
 // ─── Navigation Items ─────────────────────────────────────────────────────────
@@ -25,6 +25,7 @@ import type { BoxId } from '@/types/leitner'
 
 export const NAV_ITEMS = [
   { to: '/' as const, icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/words' as const, icon: LibraryBig, label: 'Words' },
   { to: '/profile' as const, icon: User, label: 'Profile' },
   { to: '/settings' as const, icon: Settings, label: 'Settings' },
 ] as const

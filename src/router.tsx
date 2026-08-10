@@ -9,6 +9,7 @@ import { DashboardPage } from '@/routes/dashboard'
 import { ProfilePage } from '@/routes/profile'
 import { SettingsPage } from '@/routes/settings'
 import { PracticePage } from '@/routes/practice'
+import { WordsPage } from '@/routes/words'
 
 const rootRoute = createRootRoute({
   component: AppShell,
@@ -38,8 +39,15 @@ const practiceRoute = createRoute({
   component: PracticePage,
 })
 
+const wordsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/words',
+  component: WordsPage,
+})
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
+  wordsRoute,
   profileRoute,
   settingsRoute,
   practiceRoute,

@@ -131,6 +131,32 @@
   #root {
     min-height: 100vh;
   }
+
+  /* ── Custom Scrollbar Styles ─────────────────────────────────────────────── */
+  * {
+    /* For Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+  }
+
+  /* For Webkit (Chrome, Edge, Safari) */
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 10px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
 }
 
 @layer utilities {
@@ -142,6 +168,15 @@
   }
   .animate-theme-icon {
     animation: theme-icon-pop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  /* Hide scrollbar for elements like horizontal carousels but keep functionality */
+  .hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }
 
