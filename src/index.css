@@ -51,6 +51,19 @@
     --nav-width-sm: 5rem;              /* 80px icon-only  (md)    */
     --nav-width-lg: 15rem;             /* 240px with labels (lg)  */
     --nav-bottom-h: 4.5rem;            /* 72px bottom bar (mobile)*/
+
+    /* ── Leitner box colors ──────────────────────────────────── */
+    --box-1: 350 89% 60%;             /* rose   — daily          */
+    --box-2: 38 92% 50%;              /* amber  — every 2 days   */
+    --box-3: 199 89% 48%;             /* sky    — every 4 days   */
+    --box-4: 263 70% 50%;             /* violet — weekly         */
+    --box-5: 94 78% 68%;              /* lime   — mastered (= primary) */
+
+    /* ── Stat icon colors ────────────────────────────────────── */
+    --stat-info: 199 89% 48%;         /* sky   */
+    --stat-danger: 350 89% 60%;       /* rose  */
+    --stat-warning: 25 95% 53%;       /* orange */
+    --stat-success: 263 70% 50%;      /* violet */
   }
 
   /* ── Dark mode palette ───────────────────────────────────────────────────── */
@@ -86,6 +99,19 @@
 
     /* nav sidebar background — slightly darker than card */
     --nav-bg: 225 28% 10%;
+
+    /* ── Leitner box colors (dark) ───────────────────────────── */
+    --box-1: 350 82% 65%;
+    --box-2: 38 90% 55%;
+    --box-3: 199 85% 55%;
+    --box-4: 263 65% 60%;
+    --box-5: 94 78% 68%;
+
+    /* ── Stat icon colors (dark) ─────────────────────────────── */
+    --stat-info: 199 85% 55%;
+    --stat-danger: 350 82% 65%;
+    --stat-warning: 25 90% 58%;
+    --stat-success: 263 65% 60%;
   }
 
   * {

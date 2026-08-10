@@ -1,75 +1,7 @@
 import type { LeitnerBox, BoxId } from '@/types/leitner'
+import { BOX_CONFIG } from '@/lib/design-tokens'
 import { cn } from '@/lib/utils'
 import { Clock, ArrowRight, CheckCircle2 } from 'lucide-react'
-
-// ─── Per-box visual theme ──────────────────────────────────────────────────────
-
-const BOX_THEME = {
-  1: {
-    accent:      'bg-rose-500',
-    accentLeft:  'bg-rose-500',
-    softBg:      'bg-rose-500/10 dark:bg-rose-500/15',
-    text:        'text-rose-600 dark:text-rose-400',
-    badge:       'bg-rose-500/15 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400',
-    bar:         'bg-rose-500',
-    button:      'bg-rose-500 hover:bg-rose-600 active:scale-[0.97] text-white shadow-sm shadow-rose-500/30',
-    borderColor: 'border-rose-200 dark:border-rose-500/20',
-    name:        'Daily',
-    description: 'Review every day',
-  },
-  2: {
-    accent:      'bg-amber-500',
-    accentLeft:  'bg-amber-500',
-    softBg:      'bg-amber-500/10 dark:bg-amber-500/15',
-    text:        'text-amber-600 dark:text-amber-400',
-    badge:       'bg-amber-500/15 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400',
-    bar:         'bg-amber-500',
-    button:      'bg-amber-500 hover:bg-amber-600 active:scale-[0.97] text-white shadow-sm shadow-amber-500/30',
-    borderColor: 'border-amber-200 dark:border-amber-500/20',
-    name:        'Every 2 Days',
-    description: 'Recall building',
-  },
-  3: {
-    accent:      'bg-sky-500',
-    accentLeft:  'bg-sky-500',
-    softBg:      'bg-sky-500/10 dark:bg-sky-500/15',
-    text:        'text-sky-600 dark:text-sky-400',
-    badge:       'bg-sky-500/15 text-sky-600 dark:bg-sky-500/20 dark:text-sky-400',
-    bar:         'bg-sky-500',
-    button:      'bg-sky-500 hover:bg-sky-600 active:scale-[0.97] text-white shadow-sm shadow-sky-500/30',
-    borderColor: 'border-sky-200 dark:border-sky-500/20',
-    name:        'Every 4 Days',
-    description: 'Short-term memory',
-  },
-  4: {
-    accent:      'bg-violet-500',
-    accentLeft:  'bg-violet-500',
-    softBg:      'bg-violet-500/10 dark:bg-violet-500/15',
-    text:        'text-violet-600 dark:text-violet-400',
-    badge:       'bg-violet-500/15 text-violet-600 dark:bg-violet-500/20 dark:text-violet-400',
-    bar:         'bg-violet-500',
-    button:      'bg-violet-500 hover:bg-violet-600 active:scale-[0.97] text-white shadow-sm shadow-violet-500/30',
-    borderColor: 'border-violet-200 dark:border-violet-500/20',
-    name:        'Weekly',
-    description: 'Long-term recall',
-  },
-  5: {
-    accent:      'bg-primary',
-    accentLeft:  'bg-primary',
-    softBg:      'bg-primary/10 dark:bg-primary/15',
-    text:        'text-primary',
-    badge:       'bg-primary/15 text-primary dark:bg-primary/20',
-    bar:         'bg-primary',
-    button:      'bg-primary hover:bg-primary/90 active:scale-[0.97] text-primary-foreground shadow-sm shadow-primary/30',
-    borderColor: 'border-primary/20 dark:border-primary/20',
-    name:        'Mastered',
-    description: 'Every 2 weeks',
-  },
-} satisfies Record<BoxId, {
-  accent: string; accentLeft: string; softBg: string; text: string
-  badge: string; bar: string; button: string; borderColor: string
-  name: string; description: string
-}>
 
 // ─── Next-review label ────────────────────────────────────────────────────────
 
@@ -95,7 +27,7 @@ interface LeitnerBoxCardProps {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function LeitnerBoxCard({ box, totalCards, onReview }: LeitnerBoxCardProps) {
-  const theme = BOX_THEME[box.id]
+  const style = BOX_CONFIG[box.id]
   const fillPercent = totalCards > 0 ? (box.totalCards / totalCards) * 100 : 0
   const nextLabel = getNextReviewLabel(box)
   const hasDue = box.dueCount > 0
@@ -104,9 +36,8 @@ export function LeitnerBoxCard({ box, totalCards, onReview }: LeitnerBoxCardProp
     <div
       className={cn(
         'relative flex overflow-hidden rounded-2xl bg-card border shadow-sm',
-        theme.borderColor,
+        style.border,
         hasDue && 'shadow-md',
-        // Mobile: horizontal row  |  Desktop: vertical column
         'flex-row md:flex-col',
         'transition-all duration-200',
       )}
@@ -114,8 +45,7 @@ export function LeitnerBoxCard({ box, totalCards, onReview }: LeitnerBoxCardProp
       {/* ── Accent: left strip on mobile, top strip on desktop ── */}
       <div
         className={cn(
-          theme.accent,
-          // Mobile: narrow vertical bar on left
+          style.accent,
           'w-1 flex-shrink-0 md:w-full md:h-1',
           'md:self-auto self-stretch',
         )}
@@ -125,7 +55,6 @@ export function LeitnerBoxCard({ box, totalCards, onReview }: LeitnerBoxCardProp
       <div
         className={cn(
           'flex flex-1 min-w-0',
-          // Mobile: row layout — left info | right action
           'flex-row md:flex-col',
           'p-3 md:p-4',
           'gap-3',
@@ -135,8 +64,8 @@ export function LeitnerBoxCard({ box, totalCards, onReview }: LeitnerBoxCardProp
         {/* ── LEFT / TOP section: identity + count ──────────────── */}
         <div className="flex flex-col justify-center gap-1.5 min-w-0 flex-1 md:flex-none">
           {/* Box badge */}
-          <div className={cn('flex items-center gap-1.5 w-fit px-2 py-0.5 rounded-full', theme.softBg)}>
-            <span className={cn('text-[10px] font-extrabold uppercase tracking-widest leading-none', theme.text)}>
+          <div className={cn('flex items-center gap-1.5 w-fit px-2 py-0.5 rounded-full', style.softBg)}>
+            <span className={cn('text-[10px] font-extrabold uppercase tracking-widest leading-none', style.text)}>
               Box {box.id}
             </span>
           </div>
@@ -147,7 +76,7 @@ export function LeitnerBoxCard({ box, totalCards, onReview }: LeitnerBoxCardProp
               {box.totalCards}
             </p>
             <p className="text-xs font-bold text-muted-foreground mt-0.5">
-              {theme.name}
+              {style.name}
             </p>
           </div>
 
@@ -155,7 +84,7 @@ export function LeitnerBoxCard({ box, totalCards, onReview }: LeitnerBoxCardProp
           <div className="md:hidden">
             <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
               <div
-                className={cn('h-full rounded-full transition-all duration-500', theme.bar)}
+                className={cn('h-full rounded-full transition-all duration-500', style.bar)}
                 style={{ width: `${fillPercent.toFixed(1)}%` }}
               />
             </div>
@@ -169,9 +98,7 @@ export function LeitnerBoxCard({ box, totalCards, onReview }: LeitnerBoxCardProp
         <div
           className={cn(
             'flex flex-col gap-2',
-            // Mobile: right column, vertically centered
             'justify-center items-end md:items-stretch',
-            // Desktop: below the left section
             'md:justify-start',
             'flex-shrink-0 md:flex-shrink',
           )}
@@ -182,7 +109,7 @@ export function LeitnerBoxCard({ box, totalCards, onReview }: LeitnerBoxCardProp
               className={cn(
                 'text-[10px] font-extrabold px-2 py-1 rounded-full',
                 'flex items-center gap-1 w-fit',
-                theme.badge,
+                style.badge,
               )}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
@@ -195,11 +122,11 @@ export function LeitnerBoxCard({ box, totalCards, onReview }: LeitnerBoxCardProp
             </span>
           )}
 
-          {/* Progress bar — desktop only (shown in left section on mobile) */}
+          {/* Progress bar — desktop only */}
           <div className="hidden md:block">
             <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
               <div
-                className={cn('h-full rounded-full transition-all duration-500', theme.bar)}
+                className={cn('h-full rounded-full transition-all duration-500', style.bar)}
                 style={{ width: `${fillPercent.toFixed(1)}%` }}
               />
             </div>
@@ -221,15 +148,13 @@ export function LeitnerBoxCard({ box, totalCards, onReview }: LeitnerBoxCardProp
             onClick={() => onReview(box.id)}
             className={cn(
               'flex items-center justify-center gap-1',
-              // Mobile: compact pill
               'px-3 py-1.5 rounded-xl',
-              // Desktop: full width
               'md:w-full md:py-2',
               'text-xs font-extrabold whitespace-nowrap',
               'transition-all duration-200',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
               hasDue
-                ? theme.button
+                ? style.button
                 : 'bg-muted text-muted-foreground cursor-not-allowed',
             )}
           >

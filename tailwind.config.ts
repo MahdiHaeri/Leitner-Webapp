@@ -43,6 +43,19 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+
+        /* ── Leitner box colors ──────────────────────────────── */
+        'box-1': 'hsl(var(--box-1) / <alpha-value>)',
+        'box-2': 'hsl(var(--box-2) / <alpha-value>)',
+        'box-3': 'hsl(var(--box-3) / <alpha-value>)',
+        'box-4': 'hsl(var(--box-4) / <alpha-value>)',
+        'box-5': 'hsl(var(--box-5) / <alpha-value>)',
+
+        /* ── Stat icon colors ────────────────────────────────── */
+        'stat-info': 'hsl(var(--stat-info) / <alpha-value>)',
+        'stat-danger': 'hsl(var(--stat-danger) / <alpha-value>)',
+        'stat-warning': 'hsl(var(--stat-warning) / <alpha-value>)',
+        'stat-success': 'hsl(var(--stat-success) / <alpha-value>)',
       },
       borderRadius: {
         lg: 'var(--radius)',

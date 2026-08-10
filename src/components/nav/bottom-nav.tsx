@@ -1,12 +1,6 @@
 import { Link, useRouterState } from '@tanstack/react-router'
-import { LayoutDashboard, User, Settings } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
-const NAV_ITEMS = [
-  { to: '/' as const, icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/profile' as const, icon: User, label: 'Profile' },
-  { to: '/settings' as const, icon: Settings, label: 'Settings' },
-] as const
+import { NAV_ITEMS } from '@/lib/design-tokens'
 
 export function BottomNav() {
   const { location } = useRouterState()
@@ -34,7 +28,6 @@ export function BottomNav() {
               isActive ? 'text-primary-foreground' : 'text-muted-foreground',
             )}
           >
-            {/* Active pill background */}
             <div className="relative flex flex-col items-center gap-0.5">
               {/* Icon container */}
               <div

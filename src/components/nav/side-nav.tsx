@@ -1,14 +1,9 @@
 import { Link, useRouterState } from '@tanstack/react-router'
-import { LayoutDashboard, User, Settings, Zap } from 'lucide-react'
+import { Zap, User } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
+import { NAV_ITEMS } from '@/lib/design-tokens'
 import { ThemeToggle } from '@/components/theme/theme-toggle'
-
-const NAV_ITEMS = [
-  { to: '/' as const, icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/profile' as const, icon: User, label: 'Profile' },
-  { to: '/settings' as const, icon: Settings, label: 'Settings' },
-] as const
 
 export function SideNav() {
   const { location } = useRouterState()
@@ -19,7 +14,6 @@ export function SideNav() {
         'hidden md:flex flex-col',
         'fixed left-0 top-0 z-50 h-screen',
         'w-20 lg:w-60',
-        /* Uses --nav-bg which is lighter in light mode, darker in dark mode */
         'bg-card border-r border-border',
         'py-6 px-3',
         'transition-all duration-300',

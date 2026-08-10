@@ -2,8 +2,10 @@ import { Flame, BookOpen, Trophy, Brain } from 'lucide-react'
 import { useLeitner } from '@/hooks/use-leitner'
 import { totalCards, totalDue, masteryPercent } from '@/types/leitner'
 import { LeitnerBoxCard } from '@/components/leitner/leitner-box-card'
+import { STAT_VARIANTS } from '@/lib/design-tokens'
 import { cn } from '@/lib/utils'
 import type { BoxId } from '@/types/leitner'
+import type { StatStyle } from '@/lib/design-tokens'
 
 // ─── Stat card ────────────────────────────────────────────────────────────────
 
@@ -11,15 +13,14 @@ interface StatCardProps {
   icon: React.ElementType
   label: string
   value: string | number
-  iconClass: string
-  bgClass: string
+  variant: StatStyle
 }
 
-function StatCard({ icon: Icon, label, value, iconClass, bgClass }: StatCardProps) {
+function StatCard({ icon: Icon, label, value, variant }: StatCardProps) {
   return (
     <div className="bg-card rounded-2xl border border-border shadow-sm p-4 flex items-center gap-3">
-      <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0', bgClass)}>
-        <Icon className={cn('w-5 h-5', iconClass)} strokeWidth={2.5} />
+      <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0', variant.bgClass)}>
+        <Icon className={cn('w-5 h-5', variant.iconClass)} strokeWidth={2.5} />
       </div>
       <div className="min-w-0">
         <p className="text-xl font-extrabold text-foreground leading-none">{value}</p>
@@ -45,7 +46,7 @@ function DashboardSkeleton() {
           <Skeleton key={i} className="h-[72px]" />
         ))}
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
         {Array.from({ length: 5 }).map((_, i) => (
           <Skeleton key={i} className="h-52" />
         ))}
@@ -71,15 +72,12 @@ export function DashboardPage() {
     )
   }
 
-  // ── Derived stats ──────────────────────────────────────────────────────────
   const total   = totalCards(data)
   const due     = totalDue(data)
   const mastery = masteryPercent(data)
 
-  // ── Review handler (wire to router when the review flow is built) ──────────
   function handleReview(boxId: BoxId) {
     // TODO: navigate to /review/:boxId once the review page exists
-    // navigate({ to: '/review/$boxId', params: { boxId: String(boxId) } })
     console.info(`Start review for Box ${boxId}`)
   }
 
@@ -94,29 +92,25 @@ export function DashboardPage() {
             icon={BookOpen}
             label="Total Words"
             value={total}
-            iconClass="text-sky-600 dark:text-sky-400"
-            bgClass="bg-sky-500/10 dark:bg-sky-500/15"
+            variant={STAT_VARIANTS.info}
           />
           <StatCard
             icon={Brain}
             label="Due Today"
             value={due}
-            iconClass={due > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-primary'}
-            bgClass={due > 0 ? 'bg-rose-500/10 dark:bg-rose-500/15' : 'bg-primary/10 dark:bg-primary/15'}
+            variant={due > 0 ? STAT_VARIANTS.danger : STAT_VARIANTS.info}
           />
           <StatCard
             icon={Flame}
             label="Day Streak"
             value={`${data.streak} 🔥`}
-            iconClass="text-orange-600 dark:text-orange-400"
-            bgClass="bg-orange-500/10 dark:bg-orange-500/15"
+            variant={STAT_VARIANTS.warning}
           />
           <StatCard
             icon={Trophy}
             label="Mastery"
             value={`${mastery}%`}
-            iconClass="text-violet-600 dark:text-violet-400"
-            bgClass="bg-violet-500/10 dark:bg-violet-500/15"
+            variant={STAT_VARIANTS.success}
           />
         </div>
       </section>
@@ -139,7 +133,7 @@ export function DashboardPage() {
           )}
         </div>
 
-        {/* Mobile: 1-col stack (1→2→3→4→5) | Desktop: 5-col grid */}
+        {/* Mobile: 1-col stack (1→5) | Desktop: 5-col grid */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
           {data.boxes.map((box) => (
             <LeitnerBoxCard
