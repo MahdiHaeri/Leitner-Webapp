@@ -1,4 +1,5 @@
 import { Flame, BookOpen, Trophy, Brain } from 'lucide-react'
+import { useNavigate } from '@tanstack/react-router'
 import { useLeitner } from '@/hooks/use-leitner'
 import { totalCards, totalDue, masteryPercent } from '@/types/leitner'
 import { LeitnerBoxCard } from '@/components/leitner/leitner-box-card'
@@ -59,6 +60,7 @@ function DashboardSkeleton() {
 
 export function DashboardPage() {
   const { data, isLoading, error } = useLeitner()
+  const navigate = useNavigate()
 
   if (isLoading) return <DashboardSkeleton />
 
@@ -77,8 +79,7 @@ export function DashboardPage() {
   const mastery = masteryPercent(data)
 
   function handleReview(boxId: BoxId) {
-    // TODO: navigate to /review/:boxId once the review page exists
-    console.info(`Start review for Box ${boxId}`)
+    navigate({ to: '/practice/$boxId', params: { boxId: String(boxId) } })
   }
 
   return (

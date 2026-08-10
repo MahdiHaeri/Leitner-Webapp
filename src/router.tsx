@@ -8,6 +8,7 @@ import { AppShell } from '@/routes/app-shell'
 import { DashboardPage } from '@/routes/dashboard'
 import { ProfilePage } from '@/routes/profile'
 import { SettingsPage } from '@/routes/settings'
+import { PracticePage } from '@/routes/practice'
 
 const rootRoute = createRootRoute({
   component: AppShell,
@@ -31,10 +32,17 @@ const settingsRoute = createRoute({
   component: SettingsPage,
 })
 
+const practiceRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/practice/$boxId',
+  component: PracticePage,
+})
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   profileRoute,
   settingsRoute,
+  practiceRoute,
 ])
 
 export const router = createRouter({
