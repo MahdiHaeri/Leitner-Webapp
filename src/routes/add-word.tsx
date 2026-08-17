@@ -3,7 +3,6 @@ import { useNavigate } from '@tanstack/react-router'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAddWord } from '@/hooks/use-add-word'
-import { useWordsStore } from '@/stores/use-words-store'
 import { InputStep } from '@/components/words/add-word/input-step'
 import { GeneratingStep } from '@/components/words/add-word/generating-step'
 import { ReviewStep } from '@/components/words/add-word/review-step'
@@ -14,16 +13,13 @@ const STEP_ORDER = ['input', 'review', 'success'] as const
 
 export function AddWordPage() {
   const navigate = useNavigate()
-  const categories = useWordsStore((s) => s.data.categories)
 
   const {
     phase,
     card,
     savedWord,
-    selectedCategoryId,
     errorMessage,
     pendingInput,
-    setSelectedCategoryId,
     updateCardField,
     generate,
     regenerate,
@@ -83,10 +79,7 @@ export function AddWordPage() {
         {(phase === 'review' || phase === 'saving') && card && (
           <ReviewStep
             card={card}
-            categories={categories}
-            selectedCategoryId={selectedCategoryId}
             isSaving={phase === 'saving'}
-            onSelectCategory={setSelectedCategoryId}
             onUpdateField={updateCardField}
             onConfirm={confirmSave}
             onRegenerate={regenerate}

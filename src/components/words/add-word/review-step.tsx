@@ -3,14 +3,10 @@ import { Check, Loader2, Pencil, RotateCcw, Volume2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { BOX_CONFIG } from '@/lib/design-tokens'
 import type { GeneratedWordCard } from '@/types/add-word'
-import type { Category, CategoryId } from '@/types/words'
 
 interface ReviewStepProps {
   card: GeneratedWordCard
-  categories: Category[]
-  selectedCategoryId: CategoryId | null
   isSaving: boolean
-  onSelectCategory: (id: CategoryId) => void
   onUpdateField: (field: 'term' | 'translation', value: string) => void
   onConfirm: () => void
   onRegenerate: () => void
@@ -89,10 +85,7 @@ function EditableText({
 
 export function ReviewStep({
   card,
-  categories,
-  selectedCategoryId,
   isSaving,
-  onSelectCategory,
   onUpdateField,
   onConfirm,
   onRegenerate,
@@ -171,36 +164,6 @@ export function ReviewStep({
         </div>
       </div>
 
-      {/* ── Category picker ───────────────────────────────────────── */}
-      <div className="mb-5">
-        <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Category</p>
-        <div className="flex flex-wrap gap-2">
-          {categories.map((cat) => {
-            const isSelected = selectedCategoryId === cat.id
-            const isSuggested = card.suggestedCategoryId === cat.id
-            return (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => onSelectCategory(cat.id)}
-                className={cn(
-                  'flex items-center gap-1.5 px-3 py-2 rounded-2xl border-2 text-xs font-extrabold transition-all duration-200',
-                  isSelected
-                    ? 'bg-primary/10 border-primary text-primary'
-                    : 'bg-card border-border text-muted-foreground hover:border-primary/40',
-                )}
-              >
-                <span>{cat.icon}</span>
-                <span>{cat.name}</span>
-                {isSuggested && !isSelected && (
-                  <span className="text-[9px] font-extrabold text-accent">•suggested</span>
-                )}
-              </button>
-            )
-          })}
-        </div>
-      </div>
-
       {/* ── Box preview note ──────────────────────────────────────── */}
       <div className={cn('flex items-center gap-2.5 rounded-2xl border px-4 py-3 mb-6', box1.softBg, box1.border)}>
         <span className={cn('w-2 h-2 rounded-full flex-shrink-0', box1.accent)} />
@@ -210,30 +173,14 @@ export function ReviewStep({
       </div>
 
       {/* ── Actions ───────────────────────────────────────────────── */}
-      <div className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={onTryAnother}
-          disabled={isSaving}
-          className="flex-shrink-0 px-3.5 py-3 rounded-2xl text-xs font-extrabold text-muted-foreground hover:bg-muted transition-colors disabled:opacity-40"
-        >
-          New word
-        </button>
-        <button
-          type="button"
-          onClick={onRegenerate}
-          disabled={isSaving}
-          className="flex-shrink-0 flex items-center gap-1.5 px-3.5 py-3 rounded-2xl border-2 border-border text-xs font-extrabold text-foreground hover:bg-muted transition-colors disabled:opacity-40"
-        >
-          <RotateCcw className="w-3.5 h-3.5" strokeWidth={2.5} />
-          Regenerate
-        </button>
+      <div className="space-y-3">
+        {/* Primary CTA — full width, unambiguous next step */}
         <button
           type="button"
           onClick={onConfirm}
-          disabled={isSaving || !selectedCategoryId}
+          disabled={isSaving}
           className={cn(
-            'flex-1 flex items-center justify-center gap-2 rounded-2xl py-3',
+            'w-full flex items-center justify-center gap-2 rounded-2xl py-3.5',
             'font-extrabold text-sm transition-all duration-200 active:scale-[0.98]',
             'bg-primary text-primary-foreground shadow-sm shadow-primary/30 hover:opacity-90',
             'disabled:opacity-60 disabled:pointer-events-none',
@@ -248,6 +195,28 @@ export function ReviewStep({
             'Add to My Words'
           )}
         </button>
+
+        {/* Secondary actions — equal weight, low visual noise */}
+        <div className="flex items-center justify-center">
+          <button
+            type="button"
+            onClick={onTryAnother}
+            disabled={isSaving}
+            className="flex-1 py-2.5 text-xs font-extrabold text-muted-foreground hover:text-foreground transition-colors disabled:opacity-40"
+          >
+            New word
+          </button>
+          <div className="h-3.5 w-px bg-border flex-shrink-0" />
+          <button
+            type="button"
+            onClick={onRegenerate}
+            disabled={isSaving}
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-extrabold text-muted-foreground hover:text-foreground transition-colors disabled:opacity-40"
+          >
+            <RotateCcw className="w-3.5 h-3.5" strokeWidth={2.5} />
+            Regenerate
+          </button>
+        </div>
       </div>
     </div>
   )
