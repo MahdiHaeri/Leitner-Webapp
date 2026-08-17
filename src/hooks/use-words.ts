@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import type { WordsData, CategoryId } from '@/types/words'
-import { MOCK_WORDS_DATA } from '@/data/mock-words'
+import { useWordsStore } from '@/stores/use-words-store'
 
 export interface UseWordsResult {
   data: WordsData | null
@@ -22,7 +22,7 @@ export function useWords(): UseWordsResult {
   const [selectedCategory, setSelectedCategory] = useState<CategoryId | null>(null)
   
   // In a real app, this would be a react-query hook
-  const data = MOCK_WORDS_DATA
+  const data = useWordsStore((s) => s.data)
   const isLoading = false
   const error = null
 

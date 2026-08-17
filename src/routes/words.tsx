@@ -1,4 +1,5 @@
-import { Search, LibraryBig } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
+import { Search, LibraryBig, Plus } from 'lucide-react'
 import { useWords } from '@/hooks/use-words'
 import { CategoryCard } from '@/components/words/category-card'
 import { WordListItem } from '@/components/words/word-list-item'
@@ -39,12 +40,25 @@ export function WordsPage() {
           <div className="w-11 h-11 rounded-2xl bg-card border border-border shadow-sm flex items-center justify-center">
             <LibraryBig className="w-5 h-5 text-foreground" strokeWidth={2.5} />
           </div>
-          <div>
+          <div className="flex-1 min-w-0">
             <h1 className="text-xl font-extrabold text-foreground">My Words</h1>
             <p className="text-xs text-muted-foreground font-semibold">
               {data.words.length} words total
             </p>
           </div>
+
+          <Link
+            id="add-word-cta"
+            to="/words/add"
+            className={cn(
+              'flex-shrink-0 flex items-center gap-1.5 rounded-2xl px-4 py-2.5',
+              'font-extrabold text-xs transition-all duration-200 active:scale-[0.97]',
+              'bg-primary text-primary-foreground shadow-sm shadow-primary/30 hover:opacity-90',
+            )}
+          >
+            <Plus className="w-4 h-4" strokeWidth={2.5} />
+            <span className="hidden sm:inline">Add Word</span>
+          </Link>
         </div>
 
         {/* Category Cards (Horizontal Scroll) */}
